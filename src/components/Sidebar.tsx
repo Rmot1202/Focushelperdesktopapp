@@ -1,4 +1,4 @@
-import { Home, Activity, Presentation, BarChart3, Settings, LogOut, User } from "lucide-react";
+import { Home, Activity, Presentation, BarChart3, Settings, LogOut, User, BookOpen } from "lucide-react";
 import logo from "figma:asset/1b757825849eec4d5898e43cdcb902dd1ddfc599.png";
 
 interface SidebarProps {
@@ -12,6 +12,7 @@ export function Sidebar({ currentScreen, onNavigate, currentUser, onLogout }: Si
   const menuItems = [
     { id: "home", label: "Home", icon: Home },
     { id: "sessions", label: "Sessions", icon: Activity },
+    { id: "articles", label: "Research", icon: BookOpen },
     { id: "slides", label: "Slides", icon: Presentation },
     { id: "analytics", label: "Analytics", icon: BarChart3 },
     { id: "settings", label: "Settings", icon: Settings },

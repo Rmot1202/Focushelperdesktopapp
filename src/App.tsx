@@ -6,9 +6,10 @@ import { SessionSetup } from "./components/SessionSetup";
 import { ActiveSession, SessionStats } from "./components/ActiveSession";
 import { SlidesGenerator } from "./components/SlidesGenerator";
 import { Analytics } from "./components/Analytics";
+import { ScholarlyArticles } from "./components/ScholarlyArticles";
 import { Toaster } from "./components/ui/sonner";
 
-type Screen = "home" | "sessions" | "slides" | "analytics" | "settings";
+type Screen = "home" | "sessions" | "slides" | "analytics" | "articles" | "settings";
 type Flow = "chat" | "setup" | "active" | "complete";
 
 export default function App() {
@@ -72,6 +73,10 @@ export default function App() {
     
     if (currentScreen === "analytics") {
       return <Analytics />;
+    }
+
+    if (currentScreen === "articles") {
+      return <ScholarlyArticles initialTopic={sessionData?.reason} />;
     }
 
     if (currentScreen === "settings") {

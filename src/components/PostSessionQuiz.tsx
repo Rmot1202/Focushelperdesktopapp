@@ -3,7 +3,7 @@ import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 import { Textarea } from "./ui/textarea";
 import { Progress } from "./ui/progress";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "./ui/dialog";
 import { BookOpen, Upload, FileText, CheckCircle2, XCircle, RefreshCw, BookMarked } from "lucide-react";
 import { toast } from "sonner@2.0.3";
 
@@ -222,6 +222,9 @@ export function PostSessionQuiz({ open, onClose, onResumeSession, sessionData }:
             <BookOpen className="w-6 h-6 text-[#7EC4B6]" />
             Post-Session Review Quiz
           </DialogTitle>
+          <DialogDescription className="text-[#A8DCD1]/80 text-sm">
+            Test your knowledge and reinforce your learning from the session.
+          </DialogDescription>
         </DialogHeader>
 
         {/* Session Summary */}
