@@ -1,0 +1,4 @@
+https://docs.google.com/document/d/1LGA7n6cNBFUvydfg4htEPdoJAtecRapKyVBZhlDnGBs/edit?usp=sharing - technical feasibility report
+https://www.figma.com/make/VLHzO7kpkiCCN5WXJJ6rqb/Focus-Helper-Desktop-App?node-id=0-4&t=UJ5IhQSEvSzJiXxy-1 - UI/UX prototype(desktop)
+https://docs.google.com/document/d/1sOvt7cHkb5jD4DDEkbLMnqeCQFkw6MnD8nK-Dz06Mzw/edit?usp=sharing - RoadMap
+https://gamma.app/docs/Focus-Frame-Intelligent-Study-Support-System-m6x1ts4vfsgp7jb - Slides
