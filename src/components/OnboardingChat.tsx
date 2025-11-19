@@ -16,6 +16,7 @@ export interface SessionData {
   duration: number;
   priorKnowledge: number;
   interest: number;
+  playMusic?: boolean;
 }
 
 export function OnboardingChat({ onComplete }: OnboardingChatProps) {
@@ -56,6 +57,12 @@ export function OnboardingChat({ onComplete }: OnboardingChatProps) {
       subtext: "1 = Not interested, 10 = Love it",
       field: "interest",
       slider: true
+    },
+    {
+      system: "Would you like relaxing lofi music during this session?",
+      subtext: "Background music can help you stay focused and in the zone",
+      chips: ["Yes, play music 🎵", "No thanks"],
+      field: "playMusic"
     }
   ];
 
@@ -110,7 +117,8 @@ export function OnboardingChat({ onComplete }: OnboardingChatProps) {
         testDate: data.testDate,
         duration: duration,
         priorKnowledge: data.priorKnowledge || 6,
-        interest: data.interest || 7
+        interest: data.interest || 7,
+        playMusic: data.playMusic === "Yes, play music 🎵"
       });
     } else {
       setStep(nextStep);
@@ -130,6 +138,7 @@ export function OnboardingChat({ onComplete }: OnboardingChatProps) {
           {sessionData.duration && <li>• Duration: {sessionData.duration} minutes</li>}
           {sessionData.priorKnowledge && <li>• Knowledge level: {sessionData.priorKnowledge}/10</li>}
           {sessionData.interest && <li>• Interest level: {sessionData.interest}/10</li>}
+          {sessionData.playMusic !== undefined && <li>• Play music: {sessionData.playMusic ? "Yes" : "No"}</li>}
         </ul>
       </div>
     );

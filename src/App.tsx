@@ -50,6 +50,13 @@ export default function App() {
     setCurrentScreen("analytics");
   };
 
+  const handleResumeSession = () => {
+    // Resume same session with same data
+    setFlowState("chat");
+    setSessionData(null);
+    setCurrentScreen("home");
+  };
+
   const handleNavigate = (screen: string) => {
     setCurrentScreen(screen as Screen);
     if (screen === "home") {
@@ -94,7 +101,7 @@ export default function App() {
     }
 
     if (flowState === "active" && sessionData) {
-      return <ActiveSession sessionData={sessionData} onEnd={handleSessionEnd} />;
+      return <ActiveSession sessionData={sessionData} onEnd={handleSessionEnd} onResumeSession={handleResumeSession} />;
     }
 
     return <OnboardingChat onComplete={handleChatComplete} />;

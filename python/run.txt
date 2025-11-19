@@ -1,9 +1,0 @@
-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
-
-apiKey: "AIzaSyAcjbrp9Nj-Uo1Qe7Yg3qeZ5nwL1V6yjn0",
-  authDomain: "mindfocus-b3ca8.firebaseapp.com",
-  projectId: "mindfocus-b3ca8",
-  storageBucket: "mindfocus-b3ca8.firebasestorage.app",
-  messagingSenderId: "224736268712",
-  appId: "1:224736268712:web:75be35373393b985118d9d",
-  measurementId: "G-YRGE4B2T0V"

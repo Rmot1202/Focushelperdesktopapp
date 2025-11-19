@@ -5,12 +5,15 @@ import { Pause, Play, FileText, X } from "lucide-react";
 import { SessionData } from "./OnboardingChat";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { NotificationDialog } from "./NotificationDialog";
+import { PostSessionQuiz } from "./PostSessionQuiz";
+import { MusicPlayer } from "./MusicPlayer";
 import { getRandomFoodFact, getRandomBreakReminder, generateQuizQuestion } from "../utils/studyFacts";
 import { toast } from "sonner@2.0.3";
 
 interface ActiveSessionProps {
   sessionData: SessionData;
   onEnd: (sessionStats: SessionStats) => void;
+  onResumeSession: () => void;
 }
 
 export interface SessionStats {
@@ -20,7 +23,7 @@ export interface SessionStats {
   snacks: number;
 }
 
-export function ActiveSession({ sessionData, onEnd }: ActiveSessionProps) {
+export function ActiveSession({ sessionData, onEnd, onResumeSession }: ActiveSessionProps) {
   const [elapsed, setElapsed] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [focusScore, setFocusScore] = useState(83);
@@ -37,6 +40,10 @@ export function ActiveSession({ sessionData, onEnd }: ActiveSessionProps) {
   const [notificationType, setNotificationType] = useState<"break" | "food" | "drink" | "quiz">("break");
   const [notificationMessage, setNotificationMessage] = useState("");
   const [quizQuestion, setQuizQuestion] = useState<{ question: string; purpose: string } | undefined>();
+  
+  // Post-session quiz
+  const [quizOpen, setQuizOpen] = useState(false);
+  const [sessionStats, setSessionStats] = useState<SessionStats | null>(null);
   
   // Tracking for notifications
   const [lastBreakTime, setLastBreakTime] = useState(0);
@@ -137,12 +144,29 @@ export function ActiveSession({ sessionData, onEnd }: ActiveSessionProps) {
   const breakIn = 1800 - (elapsed % 1800); // 30 min breaks
 
   const handleEnd = () => {
-    onEnd({
+    const stats: SessionStats = {
       duration: elapsed / 60,
       avgFocus: focusScore,
       energyDrinks,
       snacks
-    });
+    };
+    setSessionStats(stats);
+    setQuizOpen(true);
+  };
+
+  const handleQuizClose = () => {
+    setQuizOpen(false);
+    if (sessionStats) {
+      onEnd(sessionStats);
+    }
+  };
+
+  const handleResumeFromQuiz = () => {
+    setQuizOpen(false);
+    if (sessionStats) {
+      onEnd(sessionStats);
+    }
+    onResumeSession();
   };
 
   return (
@@ -155,8 +179,22 @@ export function ActiveSession({ sessionData, onEnd }: ActiveSessionProps) {
         quizQuestion={quizQuestion}
       />
 
+      {sessionStats && (
+        <PostSessionQuiz
+          open={quizOpen}
+          onClose={handleQuizClose}
+          onResumeSession={handleResumeFromQuiz}
+          sessionData={sessionStats}
+        />
+      )}
+
+      {/* Music Player */}
+      {sessionData.playMusic && (
+        <MusicPlayer autoPlay={sessionData.playMusic} />
+      )}
+      
       {/* Corner Vision Display - Zoom Style */}
-      <div className="fixed bottom-6 right-6 z-50">
+      <div className="fixed bottom-6 left-6 z-50">
         <div className="w-48 h-36 bg-[#2C4A52] rounded-lg border-2 border-[#7EC4B6]/30 overflow-hidden shadow-2xl">
           <div className="relative w-full h-full">
             {/* Camera indicator */}
