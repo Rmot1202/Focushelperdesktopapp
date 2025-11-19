@@ -1,184 +1,293 @@
-# Focus Helper Desktop App
+# **Focus Helper Desktop Application**
 
-Focus Helper is a desktop-style study companion that helps students plan sessions, track how they’re doing, and get small nudges toward better study habits.
+**Focus Helper** is an intelligent study-assistant application consisting of:
 
-This repository contains the **front-end UI** (exported from Figma) plus **Python prototypes** for future ML features like study-habit recommendations and quiz generation.
+* A **front-end desktop UI** designed in Figma
+* A **Python backend prototype (`mind_in_focus.py`)** that proves all features work
+* Planned integrations with **Firebase**, **OpenAI**, **YOLO**, and the **Gamma Slide Generation API**
 
-> **Design source:**  
-> https://www.figma.com/design/VLHzO7kpkiCCN5WXJJ6rqb/Focus-Helper-Desktop-App
+The backend currently runs standalone and outputs all the data needed for the UI to visualize live focus tracking, session statistics, quizzes, recommendations, and slide-generation results.
 
----
-
-## ✨ Features (Concept & Current State)
-
-- 🖥️ **Desktop-style dashboard UI**
-  - Shows current study session and upcoming work (tests, homework, projects).
-  - Layout designed for focus: main session area + side panels for tips and info.
-
-- ⏱️ **Study session setup (planned / WIP)**
-  - Choose what you’re working on (test, homework, project, reading, other).
-  - Specify exam date/time and session duration.
-  - Track knowledge level and interest before/after studying.
-
-- 🧠 **Study habit intelligence (Python prototypes)**
-  - **SVM model** to classify session outcomes into **Success** vs **Failure**  
-    using features like:
-    - Time spent on the subject  
-    - Attitude / motivation  
-    - Existing skills / prior knowledge
-  - **Logistic regression (planned)** for additional analytics and probability-style predictions.
-
-- 🔔 **Smart notification ideas (planned)**
-  - Ask quick, random questions about the topic during / between sessions.
-  - Comment on snacks / energy drinks (e.g., “Is this actually helping you focus?”).
-  - Suggest **break timing** (e.g., Pomodoro-style micro-breaks).
-
-> At the moment, the UI is the main working piece. The ML models and notification logic live in Python scripts and are meant to be wired into the UI in future iterations.
+When connected, the UI will render these outputs into the finished visual experience shown in the Figma design.
 
 ---
 
-## 🧰 Tech Stack
+# 🎨 **Front-End Overview (Figma → Desktop App)**
 
-- **Front-End**
-  - [TypeScript](https://www.typescriptlang.org/)
-  - [Vite](https://vitejs.dev/) for dev server and bundling
-  - HTML & CSS for layout and styling
+Figma design link:
+**[https://www.figma.com/make/VLHzO7kpkiCCN5WXJJ6rqb/Focus-Helper-Desktop-App](https://www.figma.com/make/VLHzO7kpkiCCN5WXJJ6rqb/Focus-Helper-Desktop-App)**
 
-- **Prototyping / Data Science**
-  - **Python** scripts in `/python`  
-    (e.g., for SVM, logistic regression, and quiz / study-habit experiments)
+The front-end includes:
+
+### ✅ **Session Setup UI**
+
+* Task type (Test / Homework / Project / Reading / Other)
+* Test date/time input
+* Session duration selector
+* Prior knowledge (1–10)
+* Interest level (1–10)
+* Lofi music toggle
+
+### ✅ **Live Session Dashboard**
+
+* Camera feed panel
+* Real-time focus meter
+* Eye openness / EAR indicator
+* Session timer
+* Alerts when eyes closed too long
+* “You may be asleep” notifications
+* Energy drink + snack counters
+* Quick “study facts” popup
+
+### ✅ **Session Analytics**
+
+* Avg. focus score
+* Total minutes studied
+* List of detected behaviors
+* Quick fact summary
+* Charts and graphs (front-end generated)
+
+### ✅ **Quiz Review Panel**
+
+* Upload PDF or TXT notes
+* Enter free-form text
+* Multiple-choice quiz
+* Review hints
+* Score summary
+* “Study again?” suggestions
+
+### ✅ **Slide Generator UI**
+
+Uses **Gamma Generate API** to create:
+
+* Study review decks
+* PDF or PPTX exports
+* Themed presentations
+
+(All backend-supported and front-end ready.)
 
 ---
 
-## 🚀 Getting Started
+# 🧠 **Backend Overview (mind_in_focus.py)**
 
-### 1. Clone the repository
+The Python backend serves as the **proof-of-concept engine**, fully implementing all smart features the UI depends on.
+
+### Includes:
+
+### 🔍 **1. Real-time Focus Tracking**
+
+* Uses **OpenCV** + **MediaPipe FaceMesh**
+* Computes **EAR (Eye Aspect Ratio)**
+* Detects:
+
+  * Closed eyes
+  * No face detected
+  * Sleep risk
+* Generates **continuous focus score (0–100)**
+
+### 🥤 **2. YOLOv8 Object Detection**
+
+Detects:
+
+* Energy drinks
+* Snacks
+
+Triggers:
+
+* Counters
+* Quick facts
+
+YOLO classes used:
+
+* Drinks: bottle, cup, can
+* Snacks: apple, sandwich, pizza, etc.
+
+### 💬 **3. OpenAI Integration**
+
+Two key components:
+
+1. **Energy drink study tips** (1–2 sentences)
+2. **Post-session multiple-choice quiz generator**
+
+Model used:
+
+* `gpt-4.1-mini`
+
+### 📄 **4. PDF/Text Input Processing**
+
+* `PyPDF2` to extract study material
+* TXT reader
+* Provides content for quiz and slide generation
+
+### 🔥 **5. Firebase Integration**
+
+REST-based (via `requests`):
+
+* Login (email/password)
+* Save sessions
+* Save test metadata
+
+### 🎵 **6. Lofi Music Mode**
+
+Opens YouTube stream via:
+
+* `webbrowser.open()`
+
+### 📈 **7. Session Summary Engine**
+
+Generates:
+
+* Avg focus
+* Total minutes
+* Sleep events
+* Energy drink count
+* Snacks
+* JSON stats for front-end
+
+---
+
+# 📦 **Tech Stack**
+
+## **Front-End**
+
+| Component                     | Purpose                            |
+| ----------------------------- | ---------------------------------- |
+| **TypeScript**                | UI logic & state handling          |
+| **Vite**                      | Build + dev environment            |
+| **HTML/CSS**                  | UI layout                          |
+| (Planned) **React**           | Dynamic component rendering        |
+| (Planned) **Firebase JS SDK** | Auth + data sync                   |
+| (Planned) **Axios**           | API communication to Python server |
+
+---
+
+## **Back-End**
+
+| Library                                      | Purpose                            |
+| -------------------------------------------- | ---------------------------------- |
+| **OpenCV (cv2)**                             | Webcam capture & overlays          |
+| **MediaPipe**                                | Face landmarks + EAR               |
+| **Ultralytics YOLOv8**                       | Snack / drink detection            |
+| **OpenAI SDK**                               | Quizzes + study tips               |
+| **Requests**                                 | Firebase + Gamma API communication |
+| **PyPDF2**                                   | PDF → text                         |
+| **textwrap, json, datetime, math, os, time** | System utilities                   |
+| **webbrowser**                               | Music launcher                     |
+
+---
+
+# 📊 **Data Flow & Architecture**
+
+```
+Front-End (Figma UI)
+│
+│  User input → Start session
+▼
+Python Backend (mind_in_focus.py)
+│  - Focus detection
+│  - YOLO labeling
+│  - OpenAI quiz + tips
+│  - Session stats
+│  - Firebase logging
+│  - Gamma deck creation (planned)
+▼
+Outputs JSON → Rendered by Front-End
+```
+
+---
+
+# 📽️ **Slide Generator Using Gamma API**
+
+Gamma API endpoint:
+`POST https://public-api.gamma.app/v1.0/generations`
+
+We use:
+
+* `inputText` → Summary + missed quiz topics
+* `textMode: "generate"`
+* `format: "presentation"`
+* `exportAs: pdf` or `pptx`
+
+The backend will:
+
+1. Build an outline from the quiz results
+2. Send to Gamma
+3. Await completion
+4. Return URL + export links to the UI
+
+No YAML is used.
+Gamma uses **JSON only**.
+
+---
+
+# 📅 **Planned Features**
+
+### 🔧 Architecture
+
+* Local API server to connect Python backend → TS front-end
+* Firebase sync for all analytics
+* Real-time charts generated inside UI
+
+### 📈 ML Extensions
+
+* SVM “Success vs Failure” predictor
+* Logistic regression focus-drop predictor
+* Personalized study habit recommendations
+
+### 🎓 User Experience
+
+* Daily study habit dashboard
+* Slide generator for every session
+* Automatic topic recommendation
+* Notification scheduling
+
+---
+
+# 🚀 Getting Started
+
+### 1. Clone the Repo
 
 ```bash
 git clone https://github.com/Rmot1202/Focushelperdesktopapp.git
 cd Focushelperdesktopapp
-````
+```
 
-### 2. Install dependencies
+### 2. Install Dependencies
 
 ```bash
 npm install
-# or
-yarn
 ```
 
-### 3. Run the development server
+### 3. Run Front-End
 
 ```bash
 npm run dev
-# or
-yarn dev
 ```
 
-Vite will print a local URL (commonly `http://localhost:5173`).
-Open that in your browser to view the Focus Helper desktop UI.
+### 4. Run Backend (Prototype)
 
----
-
-## 📂 Project Structure
-
-> High-level overview – exact files may evolve over time.
-
-```text
-Focushelperdesktopapp/
-├─ src/              # TypeScript + CSS source for the UI
-├─ python/           # Python scripts for ML/analytics prototypes
-├─ pthon/            # (Legacy / scratch Python folder, may be cleaned up later)
-├─ index.html        # Root HTML; Vite mounts the app here
-├─ package.json      # NPM scripts and dependencies
-├─ vite.config.ts    # Vite configuration
-└─ README.md         # Project documentation
-```
-
-### `src/`
-
-* Components and layout for the Focus Helper interface.
-* Styling for dashboard, panels, and session views.
-
-### `python/`
-
-* Prototype scripts for:
-
-  * SVM classifier for study session **success vs failure**.
-  * Future logistic regression experiments.
-  * Potential quiz generation / study-habit logic.
-
-> These scripts are currently **offline helpers** and may not yet be fully integrated into the frontend.
-
----
-
-## 🧪 NPM Scripts
-
-Check `package.json` for the full list; common ones include:
+Use the Python script located separately:
 
 ```bash
-# Start dev server in watch mode
-npm run dev
-
-# Build for production
-npm run build
-
-# Preview the production build locally
-npm run preview
+python mind_in_focus.py
 ```
 
----
-
-## 🛣️ Roadmap
-
-Planned / in-progress improvements:
-
-* **UI / UX**
-
-  * Session timeline and history view.
-  * Better visual feedback on knowledge growth and interest over time.
-
-* **ML / Analytics**
-
-  * Finish and tune **SVM** and **logistic regression** models using real session data.
-  * Surface model suggestions directly in the UI (“Try shorter sessions”, “Study earlier in the day”, etc.).
-
-* **Notification System**
-
-  * Background prompts with:
-
-    * Short concept questions on the current subject.
-    * Tips related to user’s snacks / energy drinks and their impact on focus.
-    * Gentle break reminders and stretch prompts.
-
-* **Persistence & Sync (stretch goal)**
-
-  * Connect to a backend (e.g., Firebase) to store:
-
-    * User sessions
-    * Predictions & outcomes
-    * Customized habit tips
+(The backend is not yet connected to the front-end.)
 
 ---
 
-## 🤝 Contributing
+# 🤝 Contributing
 
-1. Fork this repository.
-2. Create a feature branch:
-   `git checkout -b feature/my-feature`
-3. Commit your changes:
-   `git commit -m "Add my feature"`
-4. Push to your branch:
-   `git push origin feature/my-feature`
-5. Open a Pull Request.
+1. Fork repository
+2. Create new branch (`feature/myfeature`)
+3. Commit changes
+4. Submit pull request
 
-Suggestions, issues, and ideas are welcome!
+All contributions are welcome!
 
 ---
 
-## 📄 License
+# 📄 License
 
-A formal license hasn’t been added yet.
-Until one is specified, treat this project as **proprietary / educational use only**.
-
+Pending — currently for educational & developmental use only.
 
