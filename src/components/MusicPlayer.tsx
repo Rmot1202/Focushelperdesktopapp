@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Card } from "./ui/card";
 import { Button } from "./ui/button";
 import { Slider } from "./ui/slider";
-import { Music, Play, Pause, Volume2, VolumeX, SkipForward, ExternalLink } from "lucide-react";
+import { Music, Play, Pause, Volume2, VolumeX, SkipForward, ExternalLink, X } from "lucide-react";
 
 interface MusicPlayerProps {
   autoPlay?: boolean;
